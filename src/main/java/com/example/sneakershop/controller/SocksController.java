@@ -5,6 +5,7 @@ import com.example.sneakershop.service.SocksService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,17 +17,20 @@ public class SocksController {
     private SocksService socksService;
 
     @PostMapping("/save")
-    public Socks saveSocks(@RequestBody Socks socks) {
-        socksService.save(socks);
-        return socks;
+    public ResponseEntity<Socks> saveSocks(@RequestBody Socks socks) {
+        if (socks == null || socks.getName() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        Socks savedSocks = socksService.save(socks);
+        return ResponseEntity.ok(savedSocks);
     }
 
-    @PostMapping("/get/{id}")
+    @GetMapping("/get/{id}")
     public Socks getSocksById(@PathVariable Long id) {
         return socksService.findById(id);
     }
 
-    @PostMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     public Socks updateSocks(@RequestBody Socks socks) {
         return socksService.update(socks);
     }

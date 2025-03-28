@@ -1,6 +1,4 @@
 package com.example.sneakershop.controller;
-
-import com.example.sneakershop.dto.UserDTO;
 import com.example.sneakershop.model.User;
 import com.example.sneakershop.service.UserService;
 import lombok.RequiredArgsConstructor;

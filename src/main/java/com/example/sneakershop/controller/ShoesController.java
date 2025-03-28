@@ -3,6 +3,8 @@ package com.example.sneakershop.controller;
 import com.example.sneakershop.model.Shoes;
 import com.example.sneakershop.service.ShoesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +18,13 @@ public class ShoesController {
     private ShoesService shoesService;
 
     @PostMapping("/save")
-    public void saveShoes(Shoes shoes) {
-        shoesService.save(shoes);
+    public ResponseEntity<Shoes> saveShoes(Shoes shoes) {
+        if (shoes == null || shoes.getName() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        Shoes savedShoes = shoesService.save(shoes);
+        return ResponseEntity.ok(savedShoes);
+
     }
 
     @PostMapping("/get/{id}")

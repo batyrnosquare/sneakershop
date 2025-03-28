@@ -1,6 +1,5 @@
 package com.example.sneakershop.service;
 
-import com.example.sneakershop.dto.UserDTO;
 import com.example.sneakershop.model.User;
 import com.example.sneakershop.repository.UserRepository;
 import org.springframework.stereotype.Service;

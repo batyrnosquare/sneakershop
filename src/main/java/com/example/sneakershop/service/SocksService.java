@@ -1,9 +1,7 @@
 package com.example.sneakershop.service;
 
 import com.example.sneakershop.model.Socks;
-import com.example.sneakershop.model.User;
 import com.example.sneakershop.repository.SocksRepository;
-import com.example.sneakershop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +13,9 @@ public class SocksService {
     @Autowired
     private SocksRepository socksRepository;
 
-    public void save(Socks socks) {
+    public Socks save(Socks socks) {
         socksRepository.save(socks);
+        return socks;
     }
 
     public Socks findById(Long id) {

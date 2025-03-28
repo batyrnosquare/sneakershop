@@ -11,8 +11,9 @@ public class ShoesService {
     @Autowired
     private ShoesRepository shoesRepository;
 
-    public void save(Shoes shoes) {
+    public Shoes save(Shoes shoes) {
         shoesRepository.save(shoes);
+        return shoes;
     }
 
     public Shoes findById(Long id) {
