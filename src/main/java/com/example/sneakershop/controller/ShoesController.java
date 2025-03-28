@@ -5,10 +5,7 @@ import com.example.sneakershop.service.ShoesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.Mapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/shoes")
@@ -18,7 +15,7 @@ public class ShoesController {
     private ShoesService shoesService;
 
     @PostMapping("/save")
-    public ResponseEntity<Shoes> saveShoes(Shoes shoes) {
+    public ResponseEntity<Shoes> saveShoes(@RequestBody Shoes shoes) {
         if (shoes == null || shoes.getName() == null) {
             return ResponseEntity.badRequest().body(null);
         }
