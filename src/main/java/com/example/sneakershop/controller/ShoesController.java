@@ -3,7 +3,6 @@ package com.example.sneakershop.controller;
 import com.example.sneakershop.model.Shoes;
 import com.example.sneakershop.service.ShoesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +24,12 @@ public class ShoesController {
     }
 
     @PostMapping("/get/{id}")
-    public Shoes getShoesById(Long id) {
-        return shoesService.findById(id);
+    public ResponseEntity<Shoes> getShoesById(@PathVariable Long id) {
+        if (id == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        Shoes shoes = shoesService.findById(id);
+        return ResponseEntity.ok(shoes);
     }
 
     @PostMapping("/update")

@@ -17,7 +17,8 @@ public class ShoesService {
     }
 
     public Shoes findById(Long id) {
-        return shoesRepository.findById(id).orElse(null);
+        Shoes shoes = shoesRepository.findById(id).orElse(null);
+        return shoes;
     }
 
     public Shoes update(Shoes shoes) {

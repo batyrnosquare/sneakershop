@@ -5,6 +5,10 @@ spring:
     url: 'jdbc:postgresql://localhost:5432/sneakershop'
     username: 'postgres'
     password: 'cityzens'
+  security:
+    user:
+      name: root
+      password: root
 server:
   port: 8080
 
