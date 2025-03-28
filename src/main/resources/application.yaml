@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: 'sneakershop'
+  datasource:
+    url: 'jdbc:postgresql://localhost:5432/sneakershop'
+    username: 'postgres'
+    password: 'cityzens'
+server:
+  port: 8080
+
+
