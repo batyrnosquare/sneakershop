@@ -37,7 +37,16 @@ public class UserController {
         if (user == null || user.getUsername() == null) {
             return ResponseEntity.badRequest().body(null);
         }
-        User savedUser = userService.save(user);
+        User savedUser = userService.register(user);
+        return ResponseEntity.ok(savedUser);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<User> loginUser(@RequestBody User user) {
+        if (user == null || user.getUsername() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        User savedUser = userService.login(user);
         return ResponseEntity.ok(savedUser);
     }
 
