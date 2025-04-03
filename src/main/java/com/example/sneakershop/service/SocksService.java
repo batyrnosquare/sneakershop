@@ -14,8 +14,11 @@ public class SocksService {
     private SocksRepository socksRepository;
 
     public Socks save(Socks socks) {
-        socksRepository.save(socks);
-        return socks;
+        try {
+            return socksRepository.save(socks);
+        } catch (Exception e) {
+            throw new RuntimeException("Error saving socks: " + e.getMessage());
+        }
     }
 
     public Socks findById(Long id) {

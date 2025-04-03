@@ -1,5 +1,6 @@
 package com.example.sneakershop.controller;
 import com.example.sneakershop.model.User;
+import com.example.sneakershop.model.UserDTO;
 import com.example.sneakershop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class UserController {
 
     @GetMapping("/{username}")
     @ResponseBody
-    public User getUserByUsername(@PathVariable String username) {
+    public Optional<User> getUserByUsername(@PathVariable String username) {
         return userService.findByUsername(username);
     }
 
@@ -33,21 +34,17 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
+    public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO user) {
         if (user == null || user.getUsername() == null) {
             return ResponseEntity.badRequest().body(null);
         }
-        User savedUser = userService.register(user);
+        UserDTO savedUser = userService.register(user);
         return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestBody User user) {
-        if (user == null || user.getUsername() == null) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        User savedUser = userService.login(user);
-        return ResponseEntity.ok(savedUser);
+    public ResponseEntity<UserDTO> loginUser(@RequestBody UserDTO user) {
+        return ResponseEntity.ok(userService.login(user));
     }
 
 

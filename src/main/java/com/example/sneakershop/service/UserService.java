@@ -2,56 +2,78 @@ package com.example.sneakershop.service;
 
 import com.example.sneakershop.constants.Role;
 import com.example.sneakershop.model.User;
+import com.example.sneakershop.model.UserDTO;
 import com.example.sneakershop.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 @Service
 public class UserService {
 
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
+    private final JwtUtils jwtUtils;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+
+    public UserService(UserRepository userRepository, JwtUtils jwtUtils, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.jwtUtils = jwtUtils;
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public User save(User user) {
-        userRepository.save(user);
-        return user;
-    }
 
-    public User register(User user){
-        User newUser = userRepository.findByUsername(user.getUsername());
+    public UserDTO register(UserDTO userInfo){
         try {
-            if (newUser != null) {
-                return null;
+            if (userRepository.existsByUsername(userInfo.getUsername())) {
+                throw new RuntimeException("Username is already taken!");
             } else {
+                User user = new User();
+                user.setUsername(userInfo.getUsername());
                 user.setRole(Role.USER);
-                user.setPassword(user.getPassword());
+                user.setEmail(userInfo.getEmail());
+                user.setPassword(passwordEncoder.encode(userInfo.getPassword()));
                 userRepository.save(user);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error during registration: " + e.getMessage());
+            throw new RuntimeException("Registration failed: " + e.getMessage());
         }
-        return user;
+        return userInfo;
     }
 
-    public User login(User user) {
-        User newUser = userRepository.findByUsername(user.getUsername());
+    public UserDTO login(UserDTO userInfo) {
+        UserDTO response = new UserDTO();
         try {
-            if (newUser != null) {
-                if (newUser.getPassword().equals(user.getPassword())) {
-                    return newUser;
-                }
-            }
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            userInfo.getUsername(),
+                            userInfo.getPassword()
+                    )
+            );
+            var user = userRepository.findByUsername(userInfo.getUsername());
+            var jwt = jwtUtils.generateToken(user);
+            var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
+
+            response.setToken(jwt);
+            response.setRefreshToken(refreshToken);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error during login: " + e.getMessage());
+            throw new RuntimeException("Login failed: " + e.getMessage());
         }
-        return user;
+        return response;
     }
 
-    public User findByUsername(String username) {
+    public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
