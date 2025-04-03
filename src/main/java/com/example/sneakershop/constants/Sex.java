@@ -2,5 +2,6 @@ package com.example.sneakershop.constants;
 
 public enum Sex {
     MALE,
-    FEMALE
+    FEMALE,
+    UNISEX
 }

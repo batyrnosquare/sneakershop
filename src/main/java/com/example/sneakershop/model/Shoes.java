@@ -18,8 +18,10 @@ public class Shoes extends Item{
     @Enumerated(EnumType.STRING)
     private Material material;
 
+    @Enumerated(EnumType.STRING)
     private ShoeType type;
 
+    @Enumerated(EnumType.STRING)
     private Sex sex;
 
     public Shoes(Material material, ShoeType type, Sex sex) {

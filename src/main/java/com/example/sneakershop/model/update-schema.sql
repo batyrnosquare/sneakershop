@@ -22,8 +22,8 @@ CREATE TABLE shoes
 (
     id       BIGINT NOT NULL,
     material VARCHAR(255),
-    type     SMALLINT,
-    sex      SMALLINT,
+    type     VARCHAR(255),
+    sex      VARCHAR(255),
     CONSTRAINT pk_shoes PRIMARY KEY (id)
 );
 
