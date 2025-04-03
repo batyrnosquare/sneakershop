@@ -1,6 +1,8 @@
 package com.example.sneakershop.service;
 
+import com.example.sneakershop.model.Item;
 import com.example.sneakershop.model.Socks;
+import com.example.sneakershop.repository.ItemRepository;
 import com.example.sneakershop.repository.SocksRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +12,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SocksService {
 
-    @Autowired
-    private SocksRepository socksRepository;
+    private final ItemRepository itemRepository;
+
+    private final SocksRepository socksRepository;
 
     public Socks save(Socks socks) {
         try {
@@ -20,6 +23,7 @@ public class SocksService {
             throw new RuntimeException("Error saving socks: " + e.getMessage());
         }
     }
+
 
     public Socks findById(Long id) {
         return socksRepository.findById(id).orElse(null);

@@ -16,14 +16,10 @@ public class SocksController {
     @Autowired
     private SocksService socksService;
 
-    @PostMapping("/save")
-    public ResponseEntity<Socks> saveSocks(@RequestBody Socks socks) {
-        if (socks == null || socks.getName() == null) {
-            return ResponseEntity.badRequest().body(null);
+        @PostMapping("/save")
+        public ResponseEntity<Socks> saveSocks(@RequestBody Socks socks) {
+            return ResponseEntity.ok(socksService.save(socks));
         }
-        Socks savedSocks = socksService.save(socks);
-        return ResponseEntity.ok(savedSocks);
-    }
 
     @GetMapping("/get/{id}")
     public Socks getSocksById(@PathVariable Long id) {

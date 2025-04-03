@@ -15,13 +15,29 @@ public class Order {
 
     private Long userId;
 
-    @OneToMany(mappedBy = "order")
-    private List<Item> items = new ArrayList<>();
-
     private String status;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @ManyToMany
+    @JoinTable(
+            name = "order",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id")
+    )
+    private List<Item> items = new ArrayList<>();
+
+    public void addItems(Item item) {
+        this.items.add(item);
+        item.getOrders().add(this);
+    }
+
+    public void removeItems(Item item) {
+        this.items.remove(item);
+        item.getOrders().remove(this);
+    }
+
 
     public Order() {
     }
@@ -29,7 +45,6 @@ public class Order {
     public Order(Long id, Long userId, List<Item> items, String status, LocalDateTime createdAt) {
         this.id = id;
         this.userId = userId;
-        this.items = items;
         this.status = status;
         this.createdAt = createdAt;
     }

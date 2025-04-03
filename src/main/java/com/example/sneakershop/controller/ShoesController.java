@@ -15,12 +15,7 @@ public class ShoesController {
 
     @PostMapping("/save")
     public ResponseEntity<Shoes> saveShoes(@RequestBody Shoes shoes) {
-        if (shoes == null || shoes.getName() == null) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        Shoes savedShoes = shoesService.save(shoes);
-        return ResponseEntity.ok(savedShoes);
-
+        return ResponseEntity.ok(shoesService.save(shoes));
     }
 
     @PostMapping("/get/{id}")
