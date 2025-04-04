@@ -33,6 +33,10 @@ public class Orders {
 
     private Double totalPrice;
 
+    @OneToOne
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
+
 
 
     public void calculateTotals() {

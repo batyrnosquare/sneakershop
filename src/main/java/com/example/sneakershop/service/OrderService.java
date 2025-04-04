@@ -43,7 +43,7 @@ public class OrderService {
         Long userId = user.get().getId();
         Orders order = new Orders();
         order.setUserId(userId);
-        order.setStatus(orderDTO.getStatus());
+        order.setStatus("ORDER CREATED!");
         List<OrderItems> items = orderDTO.getOrderItems().stream()
                 .map(orderItemDTO -> {
                     if (orderItemDTO.getQuantity() <= 0) {
@@ -75,6 +75,7 @@ public class OrderService {
         order.calculateTotals();
         return orderRepository.save(order);
     }
+
 
 
 
