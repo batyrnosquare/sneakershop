@@ -5,12 +5,12 @@ import com.example.sneakershop.constants.Material;
 import com.example.sneakershop.constants.Sex;
 import com.example.sneakershop.constants.ShoeType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "shoes")
 public class Shoes extends Item{
@@ -34,27 +34,4 @@ public class Shoes extends Item{
     public Shoes() {
     }
 
-    public Material getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(Material material) {
-        this.material = material;
-    }
-
-    public ShoeType getType() {
-        return type;
-    }
-
-    public void setType(ShoeType type) {
-        this.type = type;
-    }
-
-    public Sex getSex() {
-        return sex;
-    }
-
-    public void setSex(Sex sex) {
-        this.sex = sex;
-    }
 }

@@ -39,7 +39,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(null);
         }
         UserDTO savedUser = userService.register(user);
-        return ResponseEntity.ok(savedUser);
+        return ResponseEntity.status(201).body(savedUser);
     }
 
     @PostMapping("/login")

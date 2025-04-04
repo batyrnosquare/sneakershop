@@ -18,7 +18,7 @@ public class SocksController {
 
         @PostMapping("/save")
         public ResponseEntity<Socks> saveSocks(@RequestBody Socks socks) {
-            return ResponseEntity.ok(socksService.save(socks));
+            return ResponseEntity.status(201).body(socksService.save(socks));
         }
 
     @GetMapping("/get/{id}")

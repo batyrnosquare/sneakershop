@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+@Setter
 @Entity
 @Table(name = "users")
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -55,10 +56,6 @@ public class User implements UserDetails {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
 
     @Override
     public String getUsername() {
@@ -85,10 +82,6 @@ public class User implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.stream(String.valueOf(getRole()).split(","))
@@ -100,24 +93,12 @@ public class User implements UserDetails {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public Role getRole() {
         return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 
 }

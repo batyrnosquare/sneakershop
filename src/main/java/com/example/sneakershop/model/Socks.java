@@ -2,10 +2,10 @@ package com.example.sneakershop.model;
 
 import com.example.sneakershop.constants.Material;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "socks")
 public class Socks extends Item{
@@ -20,11 +20,4 @@ public class Socks extends Item{
         this.material = material;
     }
 
-    public Material getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(Material material) {
-        this.material = material;
-    }
 }

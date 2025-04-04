@@ -15,7 +15,7 @@ public class ShoesController {
 
     @PostMapping("/save")
     public ResponseEntity<Shoes> saveShoes(@RequestBody Shoes shoes) {
-        return ResponseEntity.ok(shoesService.save(shoes));
+        return ResponseEntity.status(201).body(shoesService.save(shoes));
     }
 
     @PostMapping("/get/{id}")
