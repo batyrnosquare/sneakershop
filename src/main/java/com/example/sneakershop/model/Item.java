@@ -1,9 +1,10 @@
 package com.example.sneakershop.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -25,18 +26,15 @@ public class Item {
 
     private Double price;
 
-    @ManyToMany(mappedBy = "items")
-    private List<Order> orders = new ArrayList<>();
 
-    public List<Order> getOrders() {
-        return orders;
-    }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
-    public Item(Long id, String name, String brand, String color, List<Sizes> sizes, Double price) {
+    @JsonCreator
+    public Item(@JsonProperty("id") Long id,
+                @JsonProperty("name") String name,
+                @JsonProperty("brand") String brand,
+                @JsonProperty("color") String color,
+                @JsonProperty("sizes") List<Sizes> sizes,
+                @JsonProperty("price") Double price) {
         this.id = id;
         this.name = name;
         this.brand = brand;

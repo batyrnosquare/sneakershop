@@ -51,6 +51,7 @@ public class JwtUtils{
         return extractClaims(token, Claims::getSubject);
     }
 
+
     public <T> T extractClaims(String token, Function<Claims, T> claimsTFunction){
         return claimsTFunction.apply(Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload());
     }
