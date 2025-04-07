@@ -1,4 +1,4 @@
-package com.example.sneakershop.controller;
+package com.example.sneakershop.config;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

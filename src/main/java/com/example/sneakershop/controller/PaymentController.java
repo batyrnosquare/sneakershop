@@ -21,4 +21,11 @@ public class PaymentController {
         Payment createdPayment = paymentService.orderPayment(jwt, payment);
         return ResponseEntity.status(201).body(createdPayment);
     }
+
+
+    @PostMapping("/confirm")
+    public ResponseEntity<Payment> confirmPayment(@RequestHeader("Authorization") String jwt, @RequestBody String confirmationCode) {
+        Payment confirmedPayment = paymentService.confirmPayment(jwt, confirmationCode);
+        return ResponseEntity.ok(confirmedPayment);
+    }
 }

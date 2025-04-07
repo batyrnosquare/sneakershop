@@ -28,6 +28,8 @@ public class Payment {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    private String confirmationCode;
+
 
     public Payment() {
     }

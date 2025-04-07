@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -48,15 +49,45 @@ public class PaymentService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You are not authorized to make this payment");
         }
         payment.setOrder(order);
-
         orderRepository.save(payment.getOrder());
+
         payment.setCreatedAt(LocalDateTime.now());
         payment.setAmount(order.getTotalPrice());
         payment.setStatus("PENDING");
         payment.setPaymentMethod(payment.getPaymentMethod());
         payment.getOrder().setStatus("PAYMENT PENDING");
         payment.getOrder().setPayment(payment);
+        String confirmationCode = String.valueOf((int) (Math.random() * 1000000));
+        payment.setConfirmationCode(confirmationCode);
+        log.info("Confirmation code: {}", confirmationCode);
 
+        return paymentRepository.save(payment);
+    }
+
+    public Payment confirmPayment(String jwt, String confirmationCode) {
+        if (jwt.startsWith("Bearer ")) {
+            jwt = jwt.substring(7);
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid JWT token");
+        }
+        String username = jwtUtils.extractUsername(jwt);
+        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found")));
+        Orders order = orderRepository.findTopByUserIdOrderByIdDesc(user.get().getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
+        if (!order.getUserId().equals(user.get().getId())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You are not authorized to confirm this payment");
+        }
+        Payment payment = paymentRepository.findTopByOrder_IdOrderByIdDesc(order.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Payment not found"));
+        log.info("Confirmation code: {}", confirmationCode);
+        log.info("Payment confirmation code: {}", payment.getConfirmationCode());
+        if(!Objects.equals(confirmationCode, payment.getConfirmationCode())){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid confirmation code");
+        }else {
+            payment.setStatus("CONFIRMED");
+            payment.getOrder().setStatus("PAYMENT CONFIRMED");
+        }
         return paymentRepository.save(payment);
     }
 
