@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -34,8 +36,11 @@ public class UserService {
     public UserDTO register(UserDTO userInfo){
         try {
             if (userRepository.existsByUsername(userInfo.getUsername())) {
-                throw new RuntimeException("Username is already taken!");
-            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is already taken!");
+            }
+            if(userRepository.existsByEmail(userInfo.getEmail())){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is already taken!");
+            }else {
                 User user = new User();
                 user.setUsername(userInfo.getUsername());
                 user.setRole(Role.USER);
@@ -70,17 +75,25 @@ public class UserService {
         return response;
     }
 
-    public Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
-    public Optional<User> findById(Long id) {
-
-        return userRepository.findById(id);
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
 
-    public void delete(Long id) {
+    public String delete(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
         userRepository.deleteById(id);
+        return "User with id " + id + " deleted successfully";
     }
 }

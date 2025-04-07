@@ -22,16 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{username}")
-    @ResponseBody
-    public Optional<User> getUserByUsername(@PathVariable String username) {
-        return userService.findByUsername(username);
-    }
 
-    @GetMapping("/id={id}")
-    public Optional<User> getUserById(@PathVariable Long id) {
-        return userService.findById(id);
-    }
 
     @PostMapping("/register")
     public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO user) {
@@ -46,12 +37,4 @@ public class UserController {
     public ResponseEntity<UserDTO> loginUser(@RequestBody UserDTO user) {
         return ResponseEntity.ok(userService.login(user));
     }
-
-
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userService.delete(id);
-    }
-
-
 }

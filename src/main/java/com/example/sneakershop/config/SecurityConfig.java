@@ -42,7 +42,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable).
                 authorizeHttpRequests((req) ->
-                req.requestMatchers("/shoes/**","/socks/**" ).hasAnyAuthority("USER", "ADMIN")
+                req.requestMatchers("/shoes/get","/socks/get", "orders/create", "payment/**").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers("/admin/**", "shoes/save", "shoes/delete/", "shoes/update",
+                                "socks/save", "socks/delete/", "socks/update/", "sizes/add").hasAuthority("ADMIN")
                         .requestMatchers("/users/register", "/users/login").permitAll()
                         .anyRequest().authenticated())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
