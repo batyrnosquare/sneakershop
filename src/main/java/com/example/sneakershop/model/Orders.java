@@ -1,5 +1,6 @@
 package com.example.sneakershop.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +27,7 @@ public class Orders {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<OrderItems> orderItems = new ArrayList<>();
 
     private Integer totalQuantity;

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/socks")
 @RequiredArgsConstructor
@@ -27,6 +29,11 @@ public class SocksController {
     @GetMapping("/get/{id}")
     public Socks getSocksById(@PathVariable Long id) {
         return socksService.findById(id);
+    }
+
+    @GetMapping("/get_all")
+    public ResponseEntity<List<Socks>> getAllSocks() {
+        return ResponseEntity.ok(socksService.findAll());
     }
 
     @PutMapping("/update/{id}")

@@ -1,6 +1,7 @@
 package com.example.sneakershop.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class Item {
     private String color;
 
     @OneToMany(mappedBy = "item")
+    @JsonIgnore
     private List<Sizes> sizes = new ArrayList<>();
 
     private Double price;

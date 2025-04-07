@@ -1,6 +1,8 @@
 package com.example.sneakershop.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +18,7 @@ public class OrderItems {
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
+    @JsonBackReference
     private Orders order;
 
     @ManyToOne

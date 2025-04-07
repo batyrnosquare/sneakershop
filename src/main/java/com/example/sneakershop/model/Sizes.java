@@ -1,6 +1,7 @@
 package com.example.sneakershop.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,7 @@ public class Sizes {
 
     @ManyToOne
     @JoinColumn(name = "item_id")
+    @JsonIgnore
     private Item item;
 
     private Integer size;

@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SocksService {
@@ -33,5 +35,9 @@ public class SocksService {
 
     public void delete(Long id) {
         socksRepository.deleteById(id);
+    }
+
+    public List<Socks> findAll() {
+        return socksRepository.findAll();
     }
 }
