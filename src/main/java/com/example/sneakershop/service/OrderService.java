@@ -40,7 +40,7 @@ public class OrderService {
         String username = jwtUtils.extractUsername(jwt);
         Optional<User> user = Optional.ofNullable(userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found")));
-        Long userId = user.get().getId();
+        Long userId = user.orElse(null).getId();
         Orders order = new Orders();
         order.setUserId(userId);
         order.setStatus("ORDER CREATED!");

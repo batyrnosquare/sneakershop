@@ -27,16 +27,4 @@ public class Sizes {
     public Sizes() {
     }
 
-    public Sizes(Long id, Item item, Integer size, Integer quantity, Long itemId) {
-        this.id = id;
-        this.item = item;
-        this.size = size;
-        this.quantity = quantity;
-        this.itemId = itemId;
-    }
-
-    public Sizes(Item item) {
-        this.item = item;
-    }
-
 }

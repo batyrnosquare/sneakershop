@@ -12,10 +12,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+
 import java.util.stream.Collectors;
 
-
+@Getter
 @Setter
 @Entity
 @Table(name = "users")
@@ -30,6 +30,7 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String username;
 
+    @Column
     @Size(min = 8, message = "Password should be at least 8 characters long")
     private String password;
 
@@ -50,10 +51,6 @@ public class User implements UserDetails {
     }
 
     public User() {
-    }
-
-    public Long getId() {
-        return id;
     }
 
 
@@ -89,16 +86,10 @@ public class User implements UserDetails {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public Role getRole() {
-        return role;
-    }
 
 }

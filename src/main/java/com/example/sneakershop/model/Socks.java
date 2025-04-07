@@ -16,8 +16,4 @@ public class Socks extends Item{
     public Socks() {
     }
 
-    public Socks(Material material) {
-        this.material = material;
-    }
-
 }

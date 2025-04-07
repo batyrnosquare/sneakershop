@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
@@ -21,8 +20,8 @@ import java.io.IOException;
 
 @Configuration
 public class JWTAuthFilter extends OncePerRequestFilter {
-    private JwtUtils jwtUtils;
-    private MyUserDetailsService myUserDetailsService;
+    private final JwtUtils jwtUtils;
+    private final MyUserDetailsService myUserDetailsService;
 
     public JWTAuthFilter(JwtUtils jwtUtils, MyUserDetailsService myUserDetailsService) {
         this.jwtUtils = jwtUtils;

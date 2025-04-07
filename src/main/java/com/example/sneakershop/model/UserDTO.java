@@ -16,13 +16,4 @@ public class UserDTO {
     private String token;
     private String refreshToken;
 
-    public UserDTO(String username, String password, String email, String role, String token) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.role = role;
-        this.token = token;
-        this.refreshToken = refreshToken;
-    }
-
 }

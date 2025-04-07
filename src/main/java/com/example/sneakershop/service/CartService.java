@@ -36,7 +36,7 @@ public class CartService {
         Optional<User> user = Optional.ofNullable(userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found")));
 
-        Cart cart = cartRepository.findByUserId(user.get().getId())
+        Cart cart = cartRepository.findByUserId(user.orElse(null).getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found"));
 
         cart.getItems().add(item);

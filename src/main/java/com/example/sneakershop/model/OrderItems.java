@@ -2,7 +2,6 @@ package com.example.sneakershop.model;
 
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.Order;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,12 +28,6 @@ public class OrderItems {
     private Integer quantity;
 
     public OrderItems() {
-    }
-
-    public OrderItems(Orders order, Item item, int quantity) {
-        this.order = order;
-        this.item = item;
-        this.quantity = quantity;
     }
 
 }

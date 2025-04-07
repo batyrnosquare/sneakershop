@@ -4,12 +4,12 @@ import com.example.sneakershop.constants.Role;
 import com.example.sneakershop.model.User;
 import com.example.sneakershop.model.UserDTO;
 import com.example.sneakershop.repository.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -17,7 +17,6 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
@@ -45,8 +44,7 @@ public class UserService {
                 userRepository.save(user);
             }
         } catch (Exception e) {
-            log.error("Error during registration: " + e.getMessage());
-            throw new RuntimeException("Registration failed: " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
         return userInfo;
     }
@@ -67,8 +65,7 @@ public class UserService {
             response.setToken(jwt);
             response.setRefreshToken(refreshToken);
         } catch (Exception e) {
-            log.error("Error during login: " + e.getMessage());
-            throw new RuntimeException("Login failed: " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Login failed: " + e.getMessage());
         }
         return response;
     }

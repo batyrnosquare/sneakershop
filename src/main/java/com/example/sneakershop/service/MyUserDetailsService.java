@@ -1,8 +1,6 @@
 package com.example.sneakershop.service;
 
 import com.example.sneakershop.repository.UserRepository;
-import jakarta.validation.constraints.Size;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -42,7 +42,7 @@ public class PaymentService {
         log.info("Username: {}", username);
         Optional<User> user = Optional.ofNullable(userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found")));
-        log.info("User: {}", user.get().getId());
+        log.info("User: {}", user.orElse(null).getId());
         Orders order = orderRepository.findTopByUserIdOrderByIdDesc(user.get().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
         log.info("Order: {}", order.getId());
@@ -74,15 +74,13 @@ public class PaymentService {
         String username = jwtUtils.extractUsername(jwt);
         Optional<User> user = Optional.ofNullable(userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found")));
-        Orders order = orderRepository.findTopByUserIdOrderByIdDesc(user.get().getId())
+        Orders order = orderRepository.findTopByUserIdOrderByIdDesc(user.orElse(null).getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
         if (!order.getUserId().equals(user.get().getId())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You are not authorized to confirm this payment");
         }
         Payment payment = paymentRepository.findTopByOrder_IdOrderByIdDesc(order.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Payment not found"));
-        log.info("Confirmation code: {}", confirmationCode);
-        log.info("Payment confirmation code: {}", payment.getConfirmationCode());
         if(!Objects.equals(confirmationCode, payment.getConfirmationCode())){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid confirmation code");
         }else {

@@ -26,11 +26,4 @@ public class Cart {
 
     public Cart() {
     }
-
-    public Cart(Long userId, List<Item> items, Double totalPrice, Integer totalQuantity) {
-        this.userId = userId;
-        this.items = items;
-        this.totalPrice = totalPrice;
-        this.totalQuantity = totalQuantity;
-    }
 }

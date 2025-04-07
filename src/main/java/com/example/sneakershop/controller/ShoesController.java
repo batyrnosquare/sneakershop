@@ -2,7 +2,6 @@ package com.example.sneakershop.controller;
 
 import com.example.sneakershop.model.Shoes;
 import com.example.sneakershop.service.ShoesService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,8 +9,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/shoes")
 public class ShoesController {
 
-    @Autowired
-    private ShoesService shoesService;
+    private final ShoesService shoesService;
+
+    public ShoesController(ShoesService shoesService) {
+        this.shoesService = shoesService;
+    }
 
     @PostMapping("/save")
     public ResponseEntity<Shoes> saveShoes(@RequestBody Shoes shoes) {
@@ -33,7 +35,7 @@ public class ShoesController {
     }
 
     @PostMapping("/delete/{id}")
-    public void deleteShoes(Long id) {
+    public void deleteShoes(@PathVariable Long id) {
         shoesService.delete(id);
     }
 
