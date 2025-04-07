@@ -1,7 +1,6 @@
 package com.example.sneakershop.service;
 
 import com.example.sneakershop.model.Shoes;
-import com.example.sneakershop.model.User;
 import com.example.sneakershop.repository.ShoesRepository;
 import org.springframework.stereotype.Service;
 
