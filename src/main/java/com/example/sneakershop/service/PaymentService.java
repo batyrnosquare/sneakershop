@@ -1,5 +1,6 @@
 package com.example.sneakershop.service;
 
+import com.example.sneakershop.constants.PaymentStatus;
 import com.example.sneakershop.model.Orders;
 import com.example.sneakershop.model.Payment;
 import com.example.sneakershop.model.User;
@@ -53,9 +54,9 @@ public class PaymentService {
 
         payment.setCreatedAt(LocalDateTime.now());
         payment.setAmount(order.getTotalPrice());
-        payment.setStatus("PENDING");
+        payment.setStatus(PaymentStatus.PENDING);
         payment.setPaymentMethod(payment.getPaymentMethod());
-        payment.getOrder().setStatus("PAYMENT PENDING");
+        payment.getOrder().setStatus(PaymentStatus.PENDING);
         payment.getOrder().setPayment(payment);
         String confirmationCode = String.valueOf((int) (Math.random() * 1000000));
         payment.setConfirmationCode(confirmationCode);
@@ -85,8 +86,8 @@ public class PaymentService {
         if(!Objects.equals(confirmationCode, payment.getConfirmationCode())){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid confirmation code");
         }else {
-            payment.setStatus("CONFIRMED");
-            payment.getOrder().setStatus("PAYMENT CONFIRMED");
+            payment.setStatus(PaymentStatus.CONFIRMED);
+            payment.getOrder().setStatus(PaymentStatus.CONFIRMED);
         }
         return paymentRepository.save(payment);
     }
