@@ -1,6 +1,7 @@
 package com.example.sneakershop.controller;
 import com.example.sneakershop.model.UserDTO;
 import com.example.sneakershop.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -21,16 +22,12 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO user) {
-        if (user == null || user.getUsername() == null) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        UserDTO savedUser = userService.register(user);
-        return ResponseEntity.status(201).body(savedUser);
+    public UserDTO registerUser(@RequestBody UserDTO user) {
+        return userService.register(user);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody UserDTO user) {
+    public String loginUser(@RequestBody UserDTO user, HttpServletResponse response) {
         UserDTO loggedUser = userService.login(user);
 
         ResponseCookie responseCookie = ResponseCookie.from("jwt", loggedUser.getToken())
@@ -39,8 +36,7 @@ public class UserController {
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
-        return ResponseEntity.ok()
-                .header("Set-Cookie", responseCookie.toString())
-                .body("Login successful");
+        response.addHeader("Set-Cookie", responseCookie.toString());
+        return "Login successful";
     }
 }

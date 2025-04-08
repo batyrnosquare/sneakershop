@@ -17,15 +17,13 @@ public class PaymentController {
     }
 
     @PostMapping("/order")
-    public ResponseEntity<Payment> orderPayment(@CookieValue(name = "jwt") String jwt,@RequestBody Payment payment) {
-        Payment createdPayment = paymentService.orderPayment(jwt, payment);
-        return ResponseEntity.status(201).body(createdPayment);
+    public Payment orderPayment(@CookieValue(name = "jwt") String jwt,@RequestBody Payment payment) {
+        return paymentService.orderPayment(jwt, payment);
     }
 
 
     @PostMapping("/confirm")
-    public ResponseEntity<Payment> confirmPayment(@CookieValue(name = "jwt") String jwt, @RequestBody String confirmationCode) {
-        Payment confirmedPayment = paymentService.confirmPayment(jwt, confirmationCode);
-        return ResponseEntity.ok(confirmedPayment);
+    public Payment confirmPayment(@CookieValue(name = "jwt") String jwt, @RequestBody String confirmationCode) {
+        return paymentService.confirmPayment(jwt, confirmationCode);
     }
 }

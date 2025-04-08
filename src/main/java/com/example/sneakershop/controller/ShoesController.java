@@ -4,7 +4,6 @@ import com.example.sneakershop.model.FilterShoes;
 import com.example.sneakershop.model.Shoes;
 import com.example.sneakershop.service.ShoesService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,25 +20,20 @@ public class ShoesController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Shoes> saveShoes(@RequestBody Shoes shoes) {
-        return ResponseEntity.status(201).body(shoesService.save(shoes));
+    public Shoes saveShoes(@RequestBody Shoes shoes) {
+        return shoesService.save(shoes);
     }
 
     @PostMapping("/get/{id}")
-    public ResponseEntity<Shoes> getShoesById(@PathVariable Long id) {
-        if (id == null) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        Shoes shoes = shoesService.findById(id);
-        return ResponseEntity.ok(shoes);
+    public Shoes getShoesById(@PathVariable Long id) {
+        return shoesService.findById(id);
     }
 
     @PostMapping("/get_all")
-    public ResponseEntity<List<Shoes>> getAllShoes(
+    public List<Shoes> getAllShoes(
             @RequestBody FilterShoes filter,
-            @RequestParam(required = false, defaultValue = "") String sortBy) {
-        List<Shoes> shoesList = shoesService.findAll(filter, sortBy);
-        return ResponseEntity.ok(shoesList);
+            @RequestParam(required = true, defaultValue = "") String sortBy) {
+        return shoesService.findAll(filter, sortBy);
     }
 
 

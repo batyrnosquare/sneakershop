@@ -20,9 +20,8 @@ public class SizesController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Sizes> addSize(@RequestBody Sizes size) {
-        Sizes createdSize = sizesService.addSizes(size);
-        return ResponseEntity.status(201).body(createdSize);
+    public Sizes addSize(@RequestBody Sizes size) {
+        return sizesService.addSizes(size);
     }
 
 

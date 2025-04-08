@@ -22,8 +22,8 @@ public class SocksController {
     }
 
     @PostMapping("/save")
-        public ResponseEntity<Socks> saveSocks(@RequestBody Socks socks) {
-            return ResponseEntity.status(201).body(socksService.save(socks));
+        public Socks saveSocks(@RequestBody Socks socks) {
+            return socksService.save(socks);
         }
 
     @GetMapping("/get/{id}")
@@ -32,8 +32,8 @@ public class SocksController {
     }
 
     @GetMapping("/get_all")
-    public ResponseEntity<List<Socks>> getAllSocks() {
-        return ResponseEntity.ok(socksService.findAll());
+    public List<Socks> getAllSocks() {
+        return socksService.findAll();
     }
 
     @PutMapping("/update/{id}")

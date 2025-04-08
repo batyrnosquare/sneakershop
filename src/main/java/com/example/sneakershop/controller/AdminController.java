@@ -18,23 +18,23 @@ public class AdminController {
     }
 
     @GetMapping("/all_users")
-    public ResponseEntity<List<User>> getAllUsers(){
-        return ResponseEntity.ok().body(userService.findAll());
+    public List<User> getAllUsers(){
+        return userService.findAll();
     }
 
     @PostMapping("/user/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username){
-        return ResponseEntity.ok().body(userService.findByUsername(username));
+    public User getUserByUsername(@PathVariable String username){
+        return userService.findByUsername(username);
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id){
-        return ResponseEntity.ok().body(userService.findById(id));
+    public User getUserById(@PathVariable Long id){
+        return userService.findById(id);
     }
 
     @DeleteMapping("/delete/user/{id}")
-    public ResponseEntity<String> deleteUserById(@PathVariable Long id){
-        return ResponseEntity.ok().body(userService.delete(id));
+    public String deleteUserById(@PathVariable Long id){
+        return userService.delete(id);
     }
 
 
