@@ -9,6 +9,9 @@ import com.example.sneakershop.repository.PaymentRepository;
 import com.example.sneakershop.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -23,12 +26,14 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final OrderRepository orderRepository;
     private final JwtUtils jwtUtils;
+    private final JavaMailSenderImpl mailSender;
 
-    public PaymentService(UserRepository userRepository, PaymentRepository paymentRepository, OrderRepository orderRepository, JwtUtils jwtUtils) {
+    public PaymentService(UserRepository userRepository, PaymentRepository paymentRepository, OrderRepository orderRepository, JwtUtils jwtUtils, JavaMailSenderImpl mailSender) {
         this.userRepository = userRepository;
         this.paymentRepository = paymentRepository;
         this.orderRepository = orderRepository;
         this.jwtUtils = jwtUtils;
+        this.mailSender = mailSender;
     }
 
     public Payment orderPayment(String jwt, Payment payment) {
@@ -55,9 +60,12 @@ public class PaymentService {
         payment.setPaymentMethod(payment.getPaymentMethod());
         payment.getOrder().setStatus(PaymentStatus.PENDING);
         payment.getOrder().setPayment(payment);
+
         String confirmationCode = String.valueOf((int) (Math.random() * 1000000));
         payment.setConfirmationCode(confirmationCode);
         log.info("Confirmation code: {}", confirmationCode);
+
+        sendConfirmationEmail(user.getEmail(), confirmationCode);
 
         return paymentRepository.save(payment);
     }
@@ -83,6 +91,15 @@ public class PaymentService {
             payment.getOrder().setStatus(PaymentStatus.CONFIRMED);
         }
         return paymentRepository.save(payment);
+    }
+
+    private void sendConfirmationEmail(String userEmail, String confirmationCode){
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(userEmail);
+        mailMessage.setSubject("Payment Confirmation Code");
+        mailMessage.setText("Your payment confirmation code is: " + confirmationCode);
+        mailSender.send(mailMessage);
+        log.info("Confirmation email send to: "+ userEmail );
     }
 
 
