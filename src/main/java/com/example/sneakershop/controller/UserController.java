@@ -2,6 +2,7 @@ package com.example.sneakershop.controller;
 import com.example.sneakershop.model.UserDTO;
 import com.example.sneakershop.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public UserDTO registerUser(@RequestBody UserDTO user) {
+    public UserDTO registerUser(@Valid @RequestBody UserDTO user) {
         return userService.register(user);
     }
 
