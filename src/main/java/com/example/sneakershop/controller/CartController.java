@@ -7,6 +7,8 @@ import com.example.sneakershop.service.CartService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/cart")
 public class CartController {
@@ -17,8 +19,10 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public Cart addToCart(@RequestBody Item item, @CookieValue(name = "jwt") String jwt) {
-        return cartService.addItemToCart(item, jwt);
+    public Cart addToCart(@RequestBody Map<String, Object> payload,@CookieValue(name = "jwt") String jwt) {
+        Long itemId = Long.parseLong(payload.get("itemId").toString());
+        Integer size = Integer.parseInt(payload.get("size").toString());
+        return cartService.addItemToCart(itemId, size, jwt);
     }
 }
 

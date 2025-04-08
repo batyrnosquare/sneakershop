@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,17 +13,18 @@ import java.util.List;
 @Table(name = "cart")
 public class Cart {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long userId;
 
-    @OneToMany
-    private List<Item> items;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    private List<CartItem> items = new ArrayList<>();
 
     private Double totalPrice;
 
     private Integer totalQuantity;
+
 
     public Cart() {
     }
