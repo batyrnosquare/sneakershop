@@ -27,22 +27,20 @@ public class CartService {
     }
 
     public Cart addItemToCart(Item item, String jwt) {
-        if (jwt.startsWith("Bearer ")) {
-            jwt= jwt.substring(7);
-        } else {
-            System.out.println("Invalid JWT token");
+        if(jwt == null || jwt.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "JWT is missing");
         }
         String username = jwtUtils.extractUsername(jwt);
-        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found")));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
 
-        Cart cart = cartRepository.findByUserId(user.orElse(null).getId())
+        Cart cart = cartRepository.findByUserId(user.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found"));
 
         cart.getItems().add(item);
         cart.setTotalPrice(cart.getTotalPrice() + item.getPrice());
         cart.setTotalQuantity(cart.getTotalQuantity() + 1);
-        cart.setUserId(user.get().getId());
+        cart.setUserId(user.getId());
         return cartRepository.save(cart);
     }
 

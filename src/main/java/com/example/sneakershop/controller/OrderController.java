@@ -19,7 +19,7 @@ public class OrderController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Orders> createOrder(@RequestHeader("Authorization") String jwt, @RequestBody OrderDTO order) {
+    public ResponseEntity<Orders> createOrder(@CookieValue(name = "jwt") String jwt, @RequestBody OrderDTO order) {
         log.info(jwt);
         Orders createdOrder = orderService.createOrder(jwt, order);
         return ResponseEntity.status(201).body(createdOrder);

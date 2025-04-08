@@ -11,7 +11,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -31,16 +30,13 @@ public class OrderService {
     }
 
     public Orders createOrder(String jwt, OrderDTO orderDTO) {
-        if (jwt.startsWith("Bearer ")) {
-            jwt = jwt.substring(7).trim();
+        if (jwt == null || jwt.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "JWT is missing" );
         }
-        log.info(jwt);
-        log.info("Order items: {}", orderDTO.getOrderItems());
-
         String username = jwtUtils.extractUsername(jwt);
-        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found")));
-        Long userId = user.orElse(null).getId();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+        Long userId = user.getId();
         Orders order = new Orders();
         order.setUserId(userId);
         order.setStatus("ORDER CREATED!");

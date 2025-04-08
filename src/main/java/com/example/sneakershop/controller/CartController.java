@@ -17,7 +17,7 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Cart> addToCart(@RequestBody Item item, @RequestHeader("Authorization") String jwt) {
+    public ResponseEntity<Cart> addToCart(@RequestBody Item item, @CookieValue(name = "jwt") String jwt) {
         Cart savedCart = cartService.addItemToCart(item, jwt);
         return ResponseEntity.ok(savedCart);
     }

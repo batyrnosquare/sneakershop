@@ -14,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -33,20 +32,18 @@ public class PaymentService {
     }
 
     public Payment orderPayment(String jwt, Payment payment) {
-        if (jwt.startsWith("Bearer ")) {
-            jwt = jwt.substring(7);
-        } else {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid JWT token");
+        if(jwt == null || jwt.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "JWT is missing");
         }
         String username = jwtUtils.extractUsername(jwt);
         log.info("Username: {}", username);
-        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found")));
-        log.info("User: {}", user.orElse(null).getId());
-        Orders order = orderRepository.findTopByUserIdOrderByIdDesc(user.get().getId())
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+        log.info("User: {}", user.getId());
+        Orders order = orderRepository.findTopByUserIdOrderByIdDesc(user.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
         log.info("Order: {}", order.getId());
-        if (!order.getUserId().equals(user.get().getId())) {
+        if (!order.getUserId().equals(user.getId())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You are not authorized to make this payment");
         }
         payment.setOrder(order);
@@ -66,17 +63,15 @@ public class PaymentService {
     }
 
     public Payment confirmPayment(String jwt, String confirmationCode) {
-        if (jwt.startsWith("Bearer ")) {
-            jwt = jwt.substring(7);
-        } else {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid JWT token");
+        if(jwt == null || jwt.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "JWT is missing");
         }
         String username = jwtUtils.extractUsername(jwt);
-        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found")));
-        Orders order = orderRepository.findTopByUserIdOrderByIdDesc(user.orElse(null).getId())
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+        Orders order = orderRepository.findTopByUserIdOrderByIdDesc(user.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
-        if (!order.getUserId().equals(user.get().getId())) {
+        if (!order.getUserId().equals(user.getId())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You are not authorized to confirm this payment");
         }
         Payment payment = paymentRepository.findTopByOrder_IdOrderByIdDesc(order.getId())

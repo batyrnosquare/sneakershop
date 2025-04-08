@@ -43,9 +43,6 @@ public class ShoesService {
         List<Predicate> predicates = new ArrayList<>();
         log.info(predicates.toString());
         Join<Shoes, Sizes> sizesJoin =  root.join("sizes", JoinType.INNER);
-
-
-
         if (filterBy.getBrand() != null && !filterBy.getBrand().isEmpty()) {
             predicates.add(root.get("brand").in(filterBy.getBrand()));
         }
@@ -55,23 +52,18 @@ public class ShoesService {
         if (filterBy.getColor() != null && !filterBy.getColor().isEmpty()) {
             predicates.add(root.get("color").in(filterBy.getColor()));
         }
-
         if (filterBy.getMaterial() != null && !filterBy.getMaterial().isEmpty()) {
             predicates.add(root.get("material").in(filterBy.getMaterial()));
         }
-
         if (filterBy.getPriceFrom() != null) {
             predicates.add(cb.greaterThanOrEqualTo(root.get("price"), filterBy.getPriceFrom()));
         }
-
         if (filterBy.getPriceTo() != null) {
             predicates.add(cb.lessThanOrEqualTo(root.get("price"), filterBy.getPriceTo()));
         }
-
         if (filterBy.getSize() != null && !filterBy.getSize().isEmpty()) {
             predicates.add(sizesJoin.get("size").in(filterBy.getSize()));
         }
-
         cq.where(predicates.toArray(new Predicate[0]));
 
         if (sortBy != null) {
@@ -86,7 +78,6 @@ public class ShoesService {
         TypedQuery<Shoes> query = entityManager.createQuery(cq);
         return query.getResultList();
     }
-
 
     public Shoes update(Shoes shoes) {
         return shoesRepository.save(shoes);

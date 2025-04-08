@@ -2,6 +2,7 @@ package com.example.sneakershop.controller;
 import com.example.sneakershop.model.UserDTO;
 import com.example.sneakershop.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,17 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDTO> loginUser(@RequestBody UserDTO user) {
-        return ResponseEntity.ok(userService.login(user));
+    public ResponseEntity<?> loginUser(@RequestBody UserDTO user) {
+        UserDTO loggedUser = userService.login(user);
+
+        ResponseCookie responseCookie = ResponseCookie.from("jwt", loggedUser.getToken())
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60)
+                .build();
+        return ResponseEntity.ok()
+                .header("Set-Cookie", responseCookie.toString())
+                .body("Login successful");
     }
 }
