@@ -32,7 +32,7 @@ public class ShoesController {
     @PostMapping("/get_all")
     public List<Shoes> getAllShoes(
             @RequestBody FilterShoes filter,
-            @RequestParam(required = true, defaultValue = "") String sortBy) {
+            @RequestParam String sortBy) {
         return shoesService.findAll(filter, sortBy);
     }
 

@@ -1,5 +1,6 @@
 package com.example.sneakershop.service;
 
+import com.example.sneakershop.constants.SortingProperties;
 import com.example.sneakershop.model.FilterShoes;
 import com.example.sneakershop.model.Shoes;
 import com.example.sneakershop.model.Sizes;
@@ -68,10 +69,10 @@ public class ShoesService {
 
         if (sortBy != null) {
             switch (sortBy) {
-                case "price_asc" -> cq.orderBy(cb.asc(root.get("price")));
-                case "price_desc" -> cq.orderBy(cb.desc(root.get("price")));
-                case "name_asc" -> cq.orderBy(cb.asc(root.get("name")));
-                case "name_desc" -> cq.orderBy(cb.desc(root.get("name")));
+                case SortingProperties.PRICE_ASC -> cq.orderBy(cb.asc(root.get("price")));
+                case SortingProperties.PRICE_DESC -> cq.orderBy(cb.desc(root.get("price")));
+                case SortingProperties.NAME_ASC -> cq.orderBy(cb.asc(root.get("name")));
+                case SortingProperties.NAME_DESC -> cq.orderBy(cb.desc(root.get("name")));
             }
         }
 
