@@ -1,5 +1,6 @@
 package com.example.sneakershop.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -36,6 +37,7 @@ public class Orders {
 
     @OneToOne
     @JoinColumn(name = "payment_id")
+    @JsonIgnore
     private Payment payment;
 
 
@@ -52,4 +54,8 @@ public class Orders {
     public Orders() {
     }
 
+    public void addOrderItem(OrderItems item){
+        this.orderItems.add(item);
+        item.setOrder(this);
+    }
 }

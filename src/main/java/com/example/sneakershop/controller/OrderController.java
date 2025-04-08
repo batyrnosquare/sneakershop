@@ -1,5 +1,6 @@
 package com.example.sneakershop.controller;
 
+import com.example.sneakershop.model.Cart;
 import com.example.sneakershop.model.Orders;
 import com.example.sneakershop.model.OrderDTO;
 import com.example.sneakershop.service.OrderService;
@@ -19,7 +20,7 @@ public class OrderController {
     }
 
     @PostMapping("/create")
-    public Orders createOrder(@CookieValue(name = "jwt") String jwt, @RequestBody OrderDTO order) {
-        return orderService.createOrder(jwt, order);
+    public Orders createOrder(@CookieValue(name = "jwt") String jwt) {
+        return orderService.createOrder(jwt);
     }
 }

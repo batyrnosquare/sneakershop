@@ -1,5 +1,6 @@
 package com.example.sneakershop.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,7 @@ public class Payment {
 
     @OneToOne
     @JoinColumn(name = "order_id", nullable = false)
+    @JsonIgnore
     private Orders order;
 
     @Column(nullable = false)
