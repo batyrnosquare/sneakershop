@@ -3,7 +3,6 @@ package com.example.sneakershop.controller;
 
 import com.example.sneakershop.model.Payment;
 import com.example.sneakershop.service.PaymentService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

@@ -10,7 +10,6 @@ import com.example.sneakershop.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -99,7 +98,7 @@ public class PaymentService {
         mailMessage.setSubject("Payment Confirmation Code");
         mailMessage.setText("Your payment confirmation code is: " + confirmationCode);
         mailSender.send(mailMessage);
-        log.info("Confirmation email send to: "+ userEmail );
+        log.info("Confirmation email send to: {}", userEmail);
     }
 
 

@@ -2,7 +2,6 @@ package com.example.sneakershop.controller;
 
 import com.example.sneakershop.model.User;
 import com.example.sneakershop.service.UserService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

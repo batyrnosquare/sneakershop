@@ -2,9 +2,7 @@ package com.example.sneakershop.controller;
 
 
 import com.example.sneakershop.model.Cart;
-import com.example.sneakershop.model.Item;
 import com.example.sneakershop.service.CartService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;

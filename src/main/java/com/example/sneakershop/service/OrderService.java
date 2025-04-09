@@ -8,24 +8,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final ItemRepository itemRepository;
     private final JwtUtils jwtUtils;
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
     private final SizesRepository sizesRepository;
 
-    public OrderService(OrderRepository orderRepository, ItemRepository itemRepository, JwtUtils jwtUtils, UserRepository userRepository, CartRepository cartRepository, SizesRepository sizesRepository) {
+    public OrderService(OrderRepository orderRepository, JwtUtils jwtUtils, UserRepository userRepository, CartRepository cartRepository, SizesRepository sizesRepository) {
         this.orderRepository = orderRepository;
-        this.itemRepository = itemRepository;
         this.jwtUtils = jwtUtils;
         this.userRepository = userRepository;
         this.cartRepository = cartRepository;
@@ -52,7 +47,6 @@ public class OrderService {
         order.setUserId(userId);
         order.setStatus("ORDER CREATED!");
         order.setCreatedAt(LocalDateTime.now());
-        List<OrderItems> items = new ArrayList<>();
 
         for(CartItem cartItem : cart.getItems()){
 
