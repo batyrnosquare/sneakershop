@@ -63,7 +63,7 @@ public class UserService {
             );
             var user = userRepository.findByUsername(userInfo.getUsername());
             var jwt = jwtUtils.generateToken(user);
-            var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
+            var refreshToken = jwtUtils.generateRefreshToken( new HashMap<>(), user);
 
             response.setToken(jwt);
             response.setRefreshToken(refreshToken);

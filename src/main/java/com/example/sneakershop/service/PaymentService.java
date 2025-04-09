@@ -14,6 +14,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -26,6 +27,7 @@ public class PaymentService {
     private final OrderRepository orderRepository;
     private final JwtUtils jwtUtils;
     private final JavaMailSenderImpl mailSender;
+    private static final SecureRandom secureRandom = new SecureRandom();
 
     public PaymentService(UserRepository userRepository, PaymentRepository paymentRepository, OrderRepository orderRepository, JwtUtils jwtUtils, JavaMailSenderImpl mailSender) {
         this.userRepository = userRepository;
@@ -60,7 +62,7 @@ public class PaymentService {
         payment.getOrder().setStatus(PaymentStatus.PENDING);
         payment.getOrder().setPayment(payment);
 
-        String confirmationCode = String.valueOf((int) (Math.random() * 1000000));
+        String confirmationCode = generateConfirmationCode();
         payment.setConfirmationCode(confirmationCode);
         log.info("Confirmation code: {}", confirmationCode);
 
@@ -90,6 +92,11 @@ public class PaymentService {
             payment.getOrder().setStatus(PaymentStatus.CONFIRMED);
         }
         return paymentRepository.save(payment);
+    }
+
+    private String generateConfirmationCode() {
+        int code =  secureRandom.nextInt(1000000);
+        return String.format("%06d", code);
     }
 
     private void sendConfirmationEmail(String userEmail, String confirmationCode){
