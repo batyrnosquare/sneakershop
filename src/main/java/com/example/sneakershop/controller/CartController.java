@@ -22,5 +22,18 @@ public class CartController {
         Integer size = Integer.parseInt(payload.get("size").toString());
         return cartService.addItemToCart(itemId, size, jwt);
     }
+
+    @GetMapping("/get")
+    public Cart getCart(@CookieValue(name = "jwt") String jwt) {
+        return cartService.getCartElements(jwt);
+    }
+
+    @DeleteMapping("/delete")
+    public Cart deleteItemFromCart(@RequestBody Map<String, Object> payload,@CookieValue(name = "jwt") String jwt) {
+        Long itemId = Long.parseLong(payload.get("itemId").toString());
+        Integer size = Integer.parseInt(payload.get("size").toString());
+        return cartService.deleteItemFromCart(itemId, size, jwt);
+    }
+
 }
 

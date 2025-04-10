@@ -16,19 +16,24 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @GetMapping("/all_users")
+    @GetMapping("/get/all_users")
     public List<User> getAllUsers(){
         return userService.findAll();
     }
 
-    @PostMapping("/user/{username}")
+    @GetMapping("/get/user/username/{username}")
     public User getUserByUsername(@PathVariable String username){
         return userService.findByUsername(username);
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/get/user/id/{id}")
     public User getUserById(@PathVariable Long id){
         return userService.findById(id);
+    }
+
+    @PutMapping("/update/user/{id}")
+    public User updateUser(@PathVariable Long id, @RequestBody User user){
+        return userService.update(id, user);
     }
 
     @DeleteMapping("/delete/user/{id}")

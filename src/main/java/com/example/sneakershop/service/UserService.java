@@ -94,4 +94,20 @@ public class UserService {
         userRepository.deleteById(id);
         return "User with id " + id + " deleted successfully";
     }
+
+    public User update(Long id, User user) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        if (user.getUsername() != null) {
+            existingUser.setUsername(user.getUsername());
+        }
+        if (user.getEmail() != null) {
+            existingUser.setEmail(user.getEmail());
+        }
+        if (user.getPassword() != null) {
+            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        return userRepository.save(existingUser);
+    }
 }

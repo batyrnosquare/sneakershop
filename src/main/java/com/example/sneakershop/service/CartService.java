@@ -67,13 +67,49 @@ public class CartService {
         cartItem.setSize(size);
         cartItem.setQuantity(1);
         cartItem.setCart(cart);
-
         cart.getItems().add(cartItem);
+
         cart.setTotalPrice(cart.getTotalPrice() + item.getPrice());
         cart.setTotalQuantity(cart.getTotalQuantity() + 1);
 
         return cartRepository.save(cart);
     }
 
+    public Cart getCartElements (String jwt) {
+        if (jwt == null || jwt.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "JWT is missing");
+        }
 
+        String username = jwtUtils.extractUsername(jwt);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+
+        return cartRepository.findByUserId(user.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found"));
+    }
+
+
+    public Cart deleteItemFromCart(Long itemId, Integer size, String jwt) {
+        if (jwt == null || jwt.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "JWT is missing");
+        }
+
+        String username = jwtUtils.extractUsername(jwt);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+
+        Cart cart = cartRepository.findByUserId(user.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found"));
+
+        CartItem cartItem = cart.getItems().stream()
+                .filter(item -> item.getItem().getId().equals(itemId) && item.getSize().equals(size))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found in cart"));
+
+        cart.setTotalPrice(cart.getTotalPrice() - (cartItem.getItem().getPrice() * cartItem.getQuantity()));
+        cart.setTotalQuantity(cart.getTotalQuantity() - cartItem.getQuantity());
+        cart.getItems().remove(cartItem);
+
+        return cartRepository.save(cart);
+    }
 }

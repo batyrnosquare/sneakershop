@@ -20,4 +20,15 @@ public class OrderController {
     public Orders createOrder(@CookieValue(name = "jwt") String jwt) {
         return orderService.createOrder(jwt);
     }
+
+    @GetMapping("/get/get_all")
+    public Orders getAllOrders(@CookieValue(name = "jwt") String jwt) {
+        return orderService.getAllOrders(jwt);
+    }
+
+    @GetMapping("/get/id/{id}")
+    public Orders getOrderById(@PathVariable Long id, @CookieValue(name = "jwt") String jwt) {
+        return orderService.getOrderById(id, jwt);
+    }
+
 }
