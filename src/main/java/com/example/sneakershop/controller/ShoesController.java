@@ -37,10 +37,11 @@ public class ShoesController {
     }
 
 
-    @PostMapping("/update")
-    public Shoes updateShoes(Shoes shoes) {
-        return shoesService.update(shoes);
+    @PostMapping("/update{id}")
+    public Shoes updateShoes(@PathVariable Long id, @RequestBody Shoes shoes) {
+        return shoesService.update(id, shoes);
     }
+
 
     @PostMapping("/delete/{id}")
     public void deleteShoes(@PathVariable Long id) {

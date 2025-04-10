@@ -114,4 +114,23 @@ public class OrderService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "JWT is missing");
         }
     }
+
+    public String deleteOrderById(Long id, String jwt) {
+        jwtMissing(jwt);
+        String username = jwtUtils.extractUsername(jwt);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+
+        Long userId = user.getId();
+
+        Orders order = orderRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
+
+        if (!order.getUserId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to delete this order");
+        }
+
+        orderRepository.delete(order);
+        return "Order with id " + id + " deleted successfully";
+    }
 }

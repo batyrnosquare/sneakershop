@@ -80,11 +80,23 @@ public class ShoesService {
         return query.getResultList();
     }
 
-    public Shoes update(Shoes shoes) {
-        return shoesRepository.save(shoes);
-    }
+
 
     public void delete(Long id) {
         shoesRepository.deleteById(id);
+    }
+
+    public Shoes update(Long id, Shoes shoes) {
+        Shoes existingShoes = shoesRepository.findById(id).orElse(null);
+        if (existingShoes != null) {
+            existingShoes.setName(shoes.getName());
+            existingShoes.setBrand(shoes.getBrand());
+            existingShoes.setColor(shoes.getColor());
+            existingShoes.setMaterial(shoes.getMaterial());
+            existingShoes.setPrice(shoes.getPrice());
+            existingShoes.setSizes(shoes.getSizes());
+            return shoesRepository.save(existingShoes);
+        }
+        return null;
     }
 }
