@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.GET;
+import java.security.Principal;
 
 @Slf4j
 @RestController
@@ -19,23 +20,23 @@ public class OrderController {
     }
 
     @PostMapping("/create")
-    public Orders createOrder(@CookieValue(name = "jwt") String jwt) {
-        return orderService.createOrder(jwt);
+    public Orders createOrder(Principal principal) {
+        return orderService.createOrder(principal.getName());
     }
 
     @GetMapping("/get/get_all")
-    public Orders getAllOrders(@CookieValue(name = "jwt") String jwt) {
-        return orderService.getAllOrders(jwt);
+    public Orders getAllOrders(Principal principal) {
+        return orderService.getAllOrders(principal.getName());
     }
 
     @GetMapping("/get/id/{id}")
-    public Orders getOrderById(@PathVariable Long id, @CookieValue(name = "jwt") String jwt) {
-        return orderService.getOrderById(id, jwt);
+    public Orders getOrderById(@PathVariable Long id, Principal principal) {
+        return orderService.getOrderById(id, principal.getName());
     }
 
     @DeleteMapping("/delete/{id}")
-    public String deleteOrderById(@PathVariable Long id, @CookieValue(name = "jwt") String jwt) {
-        return orderService.deleteOrderById(id, jwt);
+    public String deleteOrderById(@PathVariable Long id, Principal principal) {
+        return orderService.deleteOrderById(id, principal.getName());
     }
 
 }

@@ -37,11 +37,7 @@ public class PaymentService {
         this.mailSender = mailSender;
     }
 
-    public Payment orderPayment(String jwt, Payment payment) {
-        if(jwt == null || jwt.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "JWT is missing");
-        }
-        String username = jwtUtils.extractUsername(jwt);
+    public Payment orderPayment(String username, Payment payment) {
         log.info("Username: {}", username);
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
@@ -71,11 +67,7 @@ public class PaymentService {
         return paymentRepository.save(payment);
     }
 
-    public Payment confirmPayment(String jwt, String confirmationCode) {
-        if(jwt == null || jwt.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "JWT is missing");
-        }
-        String username = jwtUtils.extractUsername(jwt);
+    public Payment confirmPayment(String username, String confirmationCode) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
         Orders order = orderRepository.findTopByUserIdOrderByIdDesc(user.getId())

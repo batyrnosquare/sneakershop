@@ -27,12 +27,7 @@ public class CartService {
         this.itemRepository = itemRepository;
     }
 
-    public Cart addItemToCart(Long itemId, Integer size, String jwt) {
-        if (jwt == null || jwt.isBlank()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "JWT is missing");
-        }
-
-        String username = jwtUtils.extractUsername(jwt);
+    public Cart addItemToCart(Long itemId, Integer size, String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
 
@@ -89,12 +84,7 @@ public class CartService {
     }
 
 
-    public Cart deleteItemFromCart(Long itemId, Integer size, String jwt) {
-        if (jwt == null || jwt.isBlank()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "JWT is missing");
-        }
-
-        String username = jwtUtils.extractUsername(jwt);
+    public Cart deleteItemFromCart(Long itemId, Integer size, String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
 

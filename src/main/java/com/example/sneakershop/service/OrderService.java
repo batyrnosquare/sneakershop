@@ -27,9 +27,7 @@ public class OrderService {
         this.sizesRepository = sizesRepository;
     }
 
-    public Orders createOrder(String jwt) {
-        jwtMissing(jwt);
-        String username = jwtUtils.extractUsername(jwt);
+    public Orders createOrder(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
 
@@ -80,9 +78,7 @@ public class OrderService {
     }
 
 
-    public Orders getAllOrders(String jwt) {
-        jwtMissing(jwt);
-        String username = jwtUtils.extractUsername(jwt);
+    public Orders getAllOrders(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
 
@@ -92,9 +88,7 @@ public class OrderService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
     }
 
-    public Orders getOrderById(Long id, String jwt) {
-        jwtMissing(jwt);
-        String username = jwtUtils.extractUsername(jwt);
+    public Orders getOrderById(Long id, String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
 
@@ -115,9 +109,7 @@ public class OrderService {
         }
     }
 
-    public String deleteOrderById(Long id, String jwt) {
-        jwtMissing(jwt);
-        String username = jwtUtils.extractUsername(jwt);
+    public String deleteOrderById(Long id, String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
 

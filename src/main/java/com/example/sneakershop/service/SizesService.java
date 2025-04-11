@@ -6,6 +6,8 @@ import com.example.sneakershop.repository.ItemRepository;
 import com.example.sneakershop.repository.SizesRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class SizesService {
 
@@ -20,14 +22,15 @@ public class SizesService {
     }
 
     public Sizes addSizes(Sizes sizes){
-        Item item = itemRepository.findById(sizes.getItemId())
-                .orElseThrow(() -> new RuntimeException("Item not found"));
-        try {
+        Optional<Sizes> existingSizes = sizesRepository.findByItem_IdAndSize(sizes.getItemId(), sizes.getSize());
+        if (existingSizes.isPresent()){
+            Sizes s = existingSizes.get();
+            s.setQuantity(s.getQuantity() + sizes.getQuantity());
+            return sizesRepository.save(s);
+        } else {
+            Item item = itemRepository.findById(sizes.getItem().getId()).orElseThrow(() -> new RuntimeException("Item not found"));
             sizes.setItem(item);
-            sizesRepository.save(sizes);
-        } catch (Exception e) {
-            throw new RuntimeException("Error saving sizes: " + e.getMessage());
+            return sizesRepository.save(sizes);
         }
-        return sizes;
     }
 }

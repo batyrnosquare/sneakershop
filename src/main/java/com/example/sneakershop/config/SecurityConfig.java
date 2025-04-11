@@ -42,7 +42,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable).
                 authorizeHttpRequests((req) ->
-                req.requestMatchers("/shoes/get/}", "shoes/get_all", "/socks/get/","/socks/get_all", "/orders/**", "/payment/**", "/cart/**").hasAnyAuthority("USER", "ADMIN")
+                req.requestMatchers("/shoes/get/", "shoes/get_all", "/socks/get/","/socks/get_all", "/orders/**", "/payment/**", "/cart/**").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/admin/**", "/shoes/save", "/shoes/delete/", "/shoes/update/",
                                 "/socks/save", "/socks/delete/", "/socks/update/", "/sizes/add").hasAuthority("ADMIN")
                         .requestMatchers("/users/register", "/users/login").permitAll()

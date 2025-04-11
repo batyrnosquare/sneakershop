@@ -3,8 +3,12 @@ package com.example.sneakershop.controller;
 
 import com.example.sneakershop.model.Payment;
 import com.example.sneakershop.service.PaymentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
+@Slf4j
 @RestController
 @RequestMapping("/payment")
 public class PaymentController {
@@ -16,13 +20,14 @@ public class PaymentController {
     }
 
     @PostMapping("/order")
-    public Payment orderPayment(@CookieValue(name = "jwt") String jwt,@RequestBody Payment payment) {
-        return paymentService.orderPayment(jwt, payment);
+    public Payment orderPayment(Principal principal, @RequestBody Payment payment) {
+        log.info("User: {}", principal.getName());
+        return paymentService.orderPayment(principal.getName(), payment);
     }
 
 
     @PostMapping("/confirm")
-    public Payment confirmPayment(@CookieValue(name = "jwt") String jwt, @RequestBody String confirmationCode) {
-        return paymentService.confirmPayment(jwt, confirmationCode);
+    public Payment confirmPayment(Principal principal, @RequestBody String confirmationCode) {
+        return paymentService.confirmPayment(principal.getName(), confirmationCode);
     }
 }

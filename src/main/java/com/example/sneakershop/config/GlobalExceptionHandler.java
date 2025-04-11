@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<Object> handleResponseStatusException(ResponseStatusException e){
         Map<String, Object> errorDetails = new LinkedHashMap<>();
-        errorDetails.put("timestamp", LocalDateTime.now());
+        errorDetails.put("timestamp", LocalDateTime.now().toString());
         errorDetails.put("status", e.getStatusCode().value());
         errorDetails.put("error", e.getReason());
         errorDetails.put("message", e.getMessage());
@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<Object> handleGeneralException(Exception e){
         Map<String, Object> errorDetails = new LinkedHashMap<>();
-        errorDetails.put("timestamp", LocalDateTime.now());
+        errorDetails.put("timestamp", LocalDateTime.now().toString());
         errorDetails.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         errorDetails.put("error", "Internal Server Error");
         errorDetails.put("message", e.getMessage());
